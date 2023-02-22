@@ -6,6 +6,20 @@ enum ParseMoneyError {
     ParseFailed,
 }
 
+// A Money struct type, with a lifetime annotation (read bellow).
+struct Money<'a> {
+    amount: f32,
+    currency: &'a str,
+}
+
+// The Money struct is implemented for a specific lifetime. This means that the struct must live long enough (as long as
+// the currency parameter will live).
+impl<'a> Money<'a> {
+    fn new(amount: f32, currency: &'a str) -> Self {
+        Self { amount, currency }
+    }
+}
+
 fn main() {
     let Some(user_input) = env::args().nth(1) else {
         eprintln!("Usage: money_parser.exe <value_to_parse>");
@@ -13,7 +27,7 @@ fn main() {
     };
 
     match parse_money(&user_input) {
-        Ok((amount, currency)) => println!("Amount: {}, currency: {}", amount, currency),
+        Ok(money) => println!("Amount: {}, currency: {}", money.amount, money.currency),
         Err(error) => {
             eprintln!("Parsing error: {:?}", error);
             process::exit(1);
@@ -21,24 +35,15 @@ fn main() {
     }
 }
 
-fn parse_money(input: &str) -> Result<(f32, &str), ParseMoneyError> {
-    // Improve the split mechanism using a dedicated function that splits on whitespace.
+fn parse_money(input: &str) -> Result<Money, ParseMoneyError> {
     let segments: Vec<&str> = input.split_whitespace().collect();
 
-    // Evaluate a "slice" of the segments...
     match segments[..] {
-        // if it has at least 2 elements...
-        [amount, currency] => {
-            amount
-                // the parse to a f32...
-                .parse::<f32>()
-                // if the result is the `Ok` variant, return a tuple with amount and the currency...
-                .map(|amount| (amount, currency))
-                // but if the result is the `Err` variant, return an error.
-                .map_err(|_| ParseMoneyError::ParseFailed)
-        }
+        [amount, currency] => amount
+            .parse::<f32>()
+            .map(|amount| Money::new(amount, currency))
+            .map_err(|_| ParseMoneyError::ParseFailed),
 
-        // This arm is evaluated if the match could not get the 2 segments. Let's return early and notify the caller of the error.
         _ => Err(ParseMoneyError::InvalidInput),
     }
 }
@@ -70,33 +75,33 @@ mod tests {
 
     #[test]
     fn parse_money_should_return_integer_amount_and_currency() {
-        let (amount, currency) = parse_money("123 €").unwrap();
+        let money = parse_money("123 €").unwrap();
 
-        assert_eq!(amount, 123.0);
-        assert_eq!(currency, "€");
+        assert_eq!(money.amount, 123.0);
+        assert_eq!(money.currency, "€");
     }
 
     #[test]
     fn parse_money_should_return_float_amount_and_currency() {
-        let (amount, currency) = parse_money("123.45 €").unwrap();
+        let money = parse_money("123.45 €").unwrap();
 
-        assert_eq!(amount, 123.45);
-        assert_eq!(currency, "€");
+        assert_eq!(money.amount, 123.45);
+        assert_eq!(money.currency, "€");
     }
 
     #[test]
     fn parse_money_should_return_negative_integer_amount_and_currency() {
-        let (amount, currency) = parse_money("-123 €").unwrap();
+        let money = parse_money("-123 €").unwrap();
 
-        assert_eq!(amount, -123.0);
-        assert_eq!(currency, "€");
+        assert_eq!(money.amount, -123.0);
+        assert_eq!(money.currency, "€");
     }
 
     #[test]
     fn parse_money_should_return_negative_float_amount_and_currency() {
-        let (amount, currency) = parse_money("-123.45 €").unwrap();
+        let money = parse_money("-123.45 €").unwrap();
 
-        assert_eq!(amount, -123.45);
-        assert_eq!(currency, "€");
+        assert_eq!(money.amount, -123.45);
+        assert_eq!(money.currency, "€");
     }
 }
