@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'money_parser'",
+      "cargo": {
+        "args": ["build", "--bin=money_parser", "--package=money_parser"],
+        "filter": {
+          "name": "money_parser",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'money_parser'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bin=money_parser",
+          "--package=money_parser"
+        ],
+        "filter": {
+          "name": "money_parser",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
