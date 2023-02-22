@@ -1,33 +1,28 @@
 use std::{env, process};
 
-// Create an enum to hold the various error that can be returned by the `parse_money()` function. The `derive` attribute
-// is used by the compiler to automatically implement some basic functionality. The `Debug` trait is used to format
-// strings with the `{:?}` placeholder.
 #[derive(Debug)]
 enum ParseMoneyError {
     InvalidInput,
+    ParseFailed,
 }
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() < 2 {
+    // env::args() returns an iterator, it's an useful type that allows manipulations or transformations on the inner
+    // collection. We try to get the second argument which could not exists. This is why the next() function returns an
+    // Option type. It has 2 variant: Some and None. Let's try to match against the Some variant, which would means we
+    // got a value. If not, display the error message.
+    let Some(user_input) = env::args().nth(1) else {
         eprintln!("Usage: money_parser.exe <value_to_parse>");
-        process::exit(1);
-    }
+        return;
+    };
 
-    let result = parse_money(&args[1]);
+    let result = parse_money(&user_input);
 
-    // The `Result` type has a lot of convenient function to work with. One of them is `is_err()` which allow us to
-    // detect if an error occurred.
     if result.is_err() {
-        // `unwrap_err()` returns the err variant.
         eprintln!("Parsing error: {:?}", result.unwrap_err());
         process::exit(1);
     }
 
-    // The result variable is a `Result` type, `unwrap()` will extract the value but will "panic" if the result is `Err`
-    // variant.
     let (amount, currency) = result.unwrap();
 
     println!("Amount: {}, currency: {}", amount, currency);
@@ -37,13 +32,18 @@ fn parse_money(input: &str) -> Result<(f32, &str), ParseMoneyError> {
     let segments: Vec<&str> = input.split(' ').collect();
 
     if segments.len() != 2 {
-        // Return the `Err` variant of `Result` with the specific case of `InvalidInput`.
         return Err(ParseMoneyError::InvalidInput);
     }
 
-    let amount: f32 = segments[0].parse().unwrap();
+    // A powerful construct is the "if let" and its opposite the "let else" control flow. Here, we try to match the
+    // result of parsing to an i32 to the Ok variant. If it matches, the amount variable is created. If it doesn't,
+    // the else scope is evaluated and we return an error.
+    // As the result of `parse()` is immediately destructured we must help the `parse()` function to know which type it
+    // should parse to using the "turbofish" operator.
+    let Ok(amount) = segments[0].parse::<f32>() else {
+        return Err(ParseMoneyError::ParseFailed);
+    };
 
-    // Return the `Ok` variant of `Result` with the usual tuple.
     Ok((amount, segments[1]))
 }
 
