@@ -7,25 +7,21 @@ enum ParseMoneyError {
 }
 
 fn main() {
-    // env::args() returns an iterator, it's an useful type that allows manipulations or transformations on the inner
-    // collection. We try to get the second argument which could not exists. This is why the next() function returns an
-    // Option type. It has 2 variant: Some and None. Let's try to match against the Some variant, which would means we
-    // got a value. If not, display the error message.
     let Some(user_input) = env::args().nth(1) else {
         eprintln!("Usage: money_parser.exe <value_to_parse>");
         return;
     };
 
-    let result = parse_money(&user_input);
-
-    if result.is_err() {
-        eprintln!("Parsing error: {:?}", result.unwrap_err());
-        process::exit(1);
+    // A match is a powerful control flow construct. It allows to match on different variant of a variable and execute
+    // specific code for each of them. Moreover, the match construct will ask you to exhaust all of the variants in
+    // order to let you compile the code.
+    match parse_money(&user_input) {
+        Ok((amount, currency)) => println!("Amount: {}, currency: {}", amount, currency),
+        Err(error) => {
+            eprintln!("Parsing error: {:?}", error);
+            process::exit(1);
+        }
     }
-
-    let (amount, currency) = result.unwrap();
-
-    println!("Amount: {}, currency: {}", amount, currency);
 }
 
 fn parse_money(input: &str) -> Result<(f32, &str), ParseMoneyError> {
@@ -35,11 +31,6 @@ fn parse_money(input: &str) -> Result<(f32, &str), ParseMoneyError> {
         return Err(ParseMoneyError::InvalidInput);
     }
 
-    // A powerful construct is the "if let" and its opposite the "let else" control flow. Here, we try to match the
-    // result of parsing to an i32 to the Ok variant. If it matches, the amount variable is created. If it doesn't,
-    // the else scope is evaluated and we return an error.
-    // As the result of `parse()` is immediately destructured we must help the `parse()` function to know which type it
-    // should parse to using the "turbofish" operator.
     let Ok(amount) = segments[0].parse::<f32>() else {
         return Err(ParseMoneyError::ParseFailed);
     };
