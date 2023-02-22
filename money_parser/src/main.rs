@@ -12,9 +12,6 @@ fn main() {
         return;
     };
 
-    // A match is a powerful control flow construct. It allows to match on different variant of a variable and execute
-    // specific code for each of them. Moreover, the match construct will ask you to exhaust all of the variants in
-    // order to let you compile the code.
     match parse_money(&user_input) {
         Ok((amount, currency)) => println!("Amount: {}, currency: {}", amount, currency),
         Err(error) => {
@@ -25,17 +22,25 @@ fn main() {
 }
 
 fn parse_money(input: &str) -> Result<(f32, &str), ParseMoneyError> {
-    let segments: Vec<&str> = input.split(' ').collect();
+    // Improve the split mechanism using a dedicated function that splits on whitespace.
+    let segments: Vec<&str> = input.split_whitespace().collect();
 
-    if segments.len() != 2 {
-        return Err(ParseMoneyError::InvalidInput);
+    // Evaluate a "slice" of the segments...
+    match segments[..] {
+        // if it has at least 2 elements...
+        [amount, currency] => {
+            amount
+                // the parse to a f32...
+                .parse::<f32>()
+                // if the result is the `Ok` variant, return a tuple with amount and the currency...
+                .map(|amount| (amount, currency))
+                // but if the result is the `Err` variant, return an error.
+                .map_err(|_| ParseMoneyError::ParseFailed)
+        }
+
+        // This arm is evaluated if the match could not get the 2 segments. Let's return early and notify the caller of the error.
+        _ => Err(ParseMoneyError::InvalidInput),
     }
-
-    let Ok(amount) = segments[0].parse::<f32>() else {
-        return Err(ParseMoneyError::ParseFailed);
-    };
-
-    Ok((amount, segments[1]))
 }
 
 #[cfg(test)]
