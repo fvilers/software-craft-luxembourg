@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build slides",
+      "type": "shell",
+      "command": "marp --html --theme ./slides/dracula.css ./slides/index.md -o ./slides/index.html",
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "always",
+        "close": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

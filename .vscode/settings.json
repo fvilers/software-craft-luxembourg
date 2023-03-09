@@ -3,5 +3,17 @@
     "**/target": true,
     "**/Cargo.lock": true
   },
-  "cSpell.words": ["turbofish"]
+  "markdown.marp.themes": ["./slides/dracula.css"],
+  "cSpell.words": [
+    "Deno",
+    "dracula",
+    "Exercism",
+    "Hodde",
+    "Keyrock",
+    "Macháček",
+    "marp",
+    "minmax",
+    "turbofish",
+    "Zdeněk"
+  ]
 }
