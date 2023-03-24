@@ -6,6 +6,7 @@
   "markdown.marp.themes": ["./slides/dracula.css"],
   "cSpell.words": [
     "Deno",
+    "devday",
     "dracula",
     "Exercism",
     "Hodde",
