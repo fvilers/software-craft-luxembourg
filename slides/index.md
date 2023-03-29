@@ -25,7 +25,7 @@ style: |
 Pourquoi vous devriez vous y intéresser en 2023
 
 <small>[Fabian Vilers](https://github.com/fvilers)
-Dev Day</small>
+Software Craft Luxembourg</small>
 
 ![width:150px](./img/link_to_slides.png)
 
@@ -181,7 +181,7 @@ h1 {
 
 # Resources pour continuer
 
-- [Code source](https://github.com/fvilers/devday-2023/tree/main/money_parser) annoté de la mini démo
+- [Code source](https://github.com/fvilers/software-craft-luxembourg/tree/main/money_parser) annoté de la mini démo
 - [The Rust Programming Language](https://doc.rust-lang.org/book/) book
 - Rust Users [Forum](https://users.rust-lang.org/)
 - [Reddit](https://old.reddit.com/r/rust/)

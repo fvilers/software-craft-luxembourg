@@ -1,4 +1,4 @@
-# devday-2023
+# software-craft-luxembourg
 
 Pourquoi vous devriez vous y intéresser en 2023
 
