@@ -76,7 +76,7 @@ p img {
 
 # Pourquoi Rust ?
 
-- Utilisé et supporté par [AWS](https://aws.amazon.com/developer/language/rust/), [Firefox](https://hacks.mozilla.org/2019/02/rewriting-a-browser-component-in-rust/), [Deno](https://github.com/denoland/deno), le noyau de [Linux](https://thenewstack.io/rust-in-the-linux-kernel/), [Dropbox](https://dropbox.tech/application/why-we-built-a-custom-rust-library-for-capture), [Cloudflare](https://blog.cloudflare.com/introducing-oxy/), [Discord](https://discord.com/blog/why-discord-is-switching-from-go-to-rust) et bien d'autres
+- Utilisé et supporté par [AWS](https://aws.amazon.com/developer/language/rust/), [Firefox](https://hacks.mozilla.org/2019/02/rewriting-a-browser-component-in-rust/), [Deno](https://github.com/denoland/deno), le noyau de [Linux](https://thenewstack.io/rust-in-the-linux-kernel/), [Dropbox](https://dropbox.tech/application/why-we-built-a-custom-rust-library-for-capture), [Cloudflare](https://blog.cloudflare.com/introducing-oxy/), [Discord](https://discord.com/blog/why-discord-is-switching-from-go-to-rust), [Microsoft Windows](https://youtu.be/8T6ClX-y2AE?t=2611) et bien d'autres
 - Disponible sur de [multiples plateformes](https://doc.rust-lang.org/nightly/rustc/platform-support.html)
 - Langage le plus apprécié auprès des développeurs depuis 7 années consécutives dans [l'enquête annuelle](https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-programming-scripting-and-markup-languages) de Stack Overflow
 - Recommandé par la [NSA](https://www.theregister.com/2022/11/11/nsa_urges_orgs_to_use/)
